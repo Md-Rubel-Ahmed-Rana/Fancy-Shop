@@ -19,6 +19,15 @@ let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
+    async users() {
+        const data = await this.userService.users();
+        return {
+            statusCode: 200,
+            success: true,
+            message: 'Users fetched successful',
+            data: data,
+        };
+    }
     async register(user) {
         const newUser = await this.userService.register(user);
         return {
@@ -30,6 +39,12 @@ let UserController = class UserController {
     }
 };
 exports.UserController = UserController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "users", null);
 __decorate([
     (0, common_1.Post)('/register'),
     __param(0, (0, common_1.Body)()),

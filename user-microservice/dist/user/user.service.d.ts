@@ -7,4 +7,18 @@ export declare class UserService {
         password: string;
         email: string;
     }>;
+    findUser(email: string): Promise<{
+        id: string;
+        fullname: string;
+        username: string;
+        password: string;
+        email: string;
+    }>;
+    users(): Promise<{
+        id: string;
+        fullname: string;
+        username: string;
+        password: string;
+        email: string;
+    }[]>;
 }

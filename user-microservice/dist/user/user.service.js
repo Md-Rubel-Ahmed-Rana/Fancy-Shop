@@ -20,6 +20,19 @@ let UserService = class UserService {
         });
         return newUser;
     }
+    async findUser(email) {
+        const user = await prisma.user.findUnique({
+            where: { email },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException(`User with email ${email} not found`);
+        }
+        return user;
+    }
+    async users() {
+        const data = await prisma.user.findMany({});
+        return data;
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

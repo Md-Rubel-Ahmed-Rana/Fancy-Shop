@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { PrismaClient, User } from '@prisma/client';
 
@@ -14,5 +14,21 @@ export class UserService {
       data,
     });
     return newUser;
+  }
+
+  async findUser(email: string) {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+
+    return user;
+  }
+
+  async users() {
+    const data = await prisma.user.findMany({});
+    return data;
   }
 }
