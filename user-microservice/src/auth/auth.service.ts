@@ -1,8 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
-import { UserService } from 'src/user/user.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { User } from "@prisma/client";
+import * as bcrypt from "bcrypt";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class AuthService {
@@ -10,6 +10,7 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
+
   async login(data: Partial<User>) {
     const user = await this.userService.findUser(data.email);
     const isPasswordMatched = await bcrypt.compare(
@@ -17,7 +18,7 @@ export class AuthService {
       user.password,
     );
     if (!isPasswordMatched) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     const jwtPayload = {
@@ -25,8 +26,18 @@ export class AuthService {
       email: user.email,
     };
 
-    const accessToken = this.jwtService.sign(jwtPayload);
+    const accessToken = await this.jwtService.signAsync(jwtPayload);
 
-    return { accessToken, user };
+    return { accessToken: `Bearer ${accessToken}`, user };
+  }
+
+  async profile(email: string): Promise<User> {
+    const user = await this.userService.findUser(email);
+    if (!user) {
+      throw new UnauthorizedException("User does't exist");
+    }
+
+    delete user.password;
+    return user;
   }
 }

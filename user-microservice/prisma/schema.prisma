@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id       String @id @unique @default(uuid())
-  fullname String
-  username String @unique
-  password String
-  email    String @unique
+  id           String @id @unique @default(uuid())
+  fullName     String
+  username     String @unique
+  password     String
+  email        String @unique
+  profileImage String
 
   @@map("Users")
 }

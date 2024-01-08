@@ -9,10 +9,11 @@ export declare class UserController {
         message: string;
         data: {
             id: string;
-            fullname: string;
+            fullName: string;
             username: string;
             password: string;
             email: string;
+            profileImage: string;
         }[];
     }>;
     register(user: User): Promise<{
@@ -21,10 +22,11 @@ export declare class UserController {
         message: string;
         data: {
             id: string;
-            fullname: string;
+            fullName: string;
             username: string;
             password: string;
             email: string;
+            profileImage: string;
         };
     }>;
 }
