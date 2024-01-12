@@ -11,4 +11,27 @@ export class OrderService {
     const order = await this.orderModel.create(data);
     return order;
   }
+
+  async getAllOrder() {
+    const orders = await this.orderModel.find({});
+    return orders;
+  }
+
+  async getMyOrders(customerEmail: string) {
+    const orders = await this.orderModel.find({ customerEmail });
+    return orders;
+  }
+
+  async cancelOrder(orderId: string, cancelReason: string) {
+    const orders = await this.orderModel.findByIdAndUpdate(
+      orderId,
+      {
+        $set: { status: "cancelled", cancelReason },
+      },
+      {
+        new: true,
+      },
+    );
+    return orders;
+  }
 }
