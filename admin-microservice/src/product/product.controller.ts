@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Post,
   Put,
@@ -16,7 +15,7 @@ import { ClientProxy } from '@nestjs/microservices';
 export class ProductController {
   constructor(
     private productService: ProductService,
-    @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy,
+    // @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy,
   ) {}
 
   @Get()
@@ -34,8 +33,8 @@ export class ProductController {
   async createProduct(@Body() body: Product) {
     const product = await this.productService.createProduct(body);
 
-    // send this data to main ms to write
-    this.client.emit('create-product', body);
+    // send this data to product ms to write
+    // this.client.emit('product', 'hello');
     return {
       success: true,
       statusCode: 201,
@@ -45,7 +44,7 @@ export class ProductController {
   }
 
   @Get('/:id')
-  async getProduct(@Param() id: number) {
+  async getProduct(@Param() id: string) {
     const product = await this.productService.getProduct(id);
     return {
       success: true,
@@ -56,7 +55,7 @@ export class ProductController {
   }
 
   @Put('/update/:id')
-  async updateProduct(@Param() id: number, @Body() body: Product) {
+  async updateProduct(@Param() id: string, @Body() body: Product) {
     const product = await this.productService.updateProduct(id, body);
     return {
       success: true,
@@ -67,7 +66,7 @@ export class ProductController {
   }
 
   @Delete('/delete/:id')
-  async deleteProduct(@Param() id: number) {
+  async deleteProduct(@Param() id: string) {
     const product = await this.productService.deleteProduct(id);
     return {
       success: true,
@@ -75,13 +74,5 @@ export class ProductController {
       message: 'Product deleted successfully',
       data: product,
     };
-  }
-
-  @Post('/:id/like')
-  async like(@Param('id') id: number) {
-    const product = await this.productService.getProduct(id);
-    return this.productService.updateProduct(id, {
-      likes: product.likes + 1,
-    });
   }
 }

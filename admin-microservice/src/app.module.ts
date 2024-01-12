@@ -29,5 +29,4 @@ Database name: sql12675142
 Database user: sql12675142
 Database password: W51dEHbyBM
 Port number: 3306
-
 */

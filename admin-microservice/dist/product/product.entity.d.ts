@@ -1,6 +1,7 @@
 export declare class Product {
-    id: number;
+    id: string;
     title: string;
+    price: number;
     image: string;
     likes: number;
 }

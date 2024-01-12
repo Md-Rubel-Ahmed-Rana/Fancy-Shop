@@ -16,11 +16,9 @@ exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
 const product_service_1 = require("./product.service");
 const product_entity_1 = require("./product.entity");
-const microservices_1 = require("@nestjs/microservices");
 let ProductController = class ProductController {
-    constructor(productService, client) {
+    constructor(productService) {
         this.productService = productService;
-        this.client = client;
     }
     async allProducts() {
         const products = await this.productService.products();
@@ -33,7 +31,6 @@ let ProductController = class ProductController {
     }
     async createProduct(body) {
         const product = await this.productService.createProduct(body);
-        this.client.emit('create-product', body);
         return {
             success: true,
             statusCode: 201,
@@ -93,7 +90,7 @@ __decorate([
     (0, common_1.Get)('/:id'),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "getProduct", null);
 __decorate([
@@ -101,27 +98,25 @@ __decorate([
     __param(0, (0, common_1.Param)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, product_entity_1.Product]),
+    __metadata("design:paramtypes", [String, product_entity_1.Product]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "updateProduct", null);
 __decorate([
     (0, common_1.Delete)('/delete/:id'),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "deleteProduct", null);
 __decorate([
     (0, common_1.Post)('/:id/like'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "like", null);
 exports.ProductController = ProductController = __decorate([
     (0, common_1.Controller)('products'),
-    __param(1, (0, common_1.Inject)('PRODUCT_SERVICE')),
-    __metadata("design:paramtypes", [product_service_1.ProductService,
-        microservices_1.ClientProxy])
+    __metadata("design:paramtypes", [product_service_1.ProductService])
 ], ProductController);
 //# sourceMappingURL=product.controller.js.map

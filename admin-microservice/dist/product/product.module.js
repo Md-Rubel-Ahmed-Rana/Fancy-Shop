@@ -22,13 +22,13 @@ exports.ProductModule = ProductModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([product_entity_1.Product]),
             microservices_1.ClientsModule.register([
                 {
-                    name: 'PRODUCT_SERVICE',
+                    name: 'ADMIN_SERVICE',
                     transport: microservices_1.Transport.RMQ,
                     options: {
                         urls: [
                             'amqps://eoghmjcc:dawLE9Hqnmwe3hWzZ1D2pGI9fYqQr23l@shark.rmq.cloudamqp.com/eoghmjcc',
                         ],
-                        queue: 'main_queue',
+                        queue: 'admin_queue',
                         queueOptions: {
                             durable: false,
                         },

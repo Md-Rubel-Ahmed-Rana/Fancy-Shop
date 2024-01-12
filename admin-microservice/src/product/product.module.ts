@@ -10,13 +10,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     TypeOrmModule.forFeature([Product]),
     ClientsModule.register([
       {
-        name: 'PRODUCT_SERVICE',
+        name: 'ADMIN_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [
             'amqps://eoghmjcc:dawLE9Hqnmwe3hWzZ1D2pGI9fYqQr23l@shark.rmq.cloudamqp.com/eoghmjcc',
           ],
-          queue: 'main_queue',
+          queue: 'admin_queue',
           queueOptions: {
             durable: false,
           },

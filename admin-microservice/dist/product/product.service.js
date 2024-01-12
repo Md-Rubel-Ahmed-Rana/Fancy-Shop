@@ -17,14 +17,25 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const product_entity_1 = require("./product.entity");
 const typeorm_2 = require("typeorm");
+const microservices_1 = require("@nestjs/microservices");
 let ProductService = class ProductService {
     constructor(productRepository) {
         this.productRepository = productRepository;
+        this.client = microservices_1.ClientProxyFactory.create({
+            transport: microservices_1.Transport.RMQ,
+            options: {
+                urls: [
+                    'amqps://eoghmjcc:dawLE9Hqnmwe3hWzZ1D2pGI9fYqQr23l@shark.rmq.cloudamqp.com/eoghmjcc',
+                ],
+                queue: 'admin_queue',
+            },
+        });
     }
     async products() {
         return this.productRepository.find();
     }
     async createProduct(data) {
+        this.client.emit('createProduct', data);
         return this.productRepository.save(data);
     }
     async getProduct(id) {
