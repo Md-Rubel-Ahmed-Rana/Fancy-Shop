@@ -1,7 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Item } from "./item.model";
 
-@Schema()
+@Schema({
+  versionKey: false,
+  toJSON: {
+    virtuals: true,
+  },
+})
 export class Order {
   @Prop()
   customerName: string;

@@ -6,6 +6,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get<number>("PORT");
+  app.setGlobalPrefix("api/v1");
+  app.enableCors({
+    origin: ["http://localhost:3000"],
+  });
   await app.listen(port, () => {
     console.log(`Order microservice is running on port: ${port}`);
   });
