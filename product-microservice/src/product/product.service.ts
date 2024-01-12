@@ -19,15 +19,11 @@ export class ProductService {
     return newProduct;
   }
 
-  async findOne(id: number) {
+  async getProduct(id: string) {
     return this.productModel.findOne({ id });
   }
 
-  async like(id: number, likes: number) {
-    return this.productModel.updateOne(
-      { id },
-      { $set: { likes } },
-      { new: true },
-    );
+  async findOne(id: string) {
+    return this.productModel.findOne({ id });
   }
 }

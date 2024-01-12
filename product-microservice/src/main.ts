@@ -7,7 +7,7 @@ console.log('Hello, I am from main');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix('api/v1/');
   app.enableCors({
     origin: 'http://localhost:3000',
   });

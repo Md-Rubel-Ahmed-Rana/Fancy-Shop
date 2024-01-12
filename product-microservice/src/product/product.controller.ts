@@ -1,9 +1,8 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { EventPattern } from '@nestjs/microservices';
 import { HttpService } from '@nestjs/axios';
 
-@Controller('products')
+@Controller('/products')
 export class ProductController {
   constructor(
     private productService: ProductService,
@@ -21,9 +20,19 @@ export class ProductController {
     };
   }
 
-  @EventPattern('create-product')
-  async createProduct(data: { title: string; image: string }) {
-    console.log(`RabbitMQ data: ${data}`);
+  @Get('/:id')
+  async getProduct(@Param() id: string) {
+    const product = await this.productService.getProduct(id);
+    return {
+      success: true,
+      statusCode: 200,
+      message: 'Product fetched successfully',
+      data: product,
+    };
+  }
+
+  async handleCreateProduct(data: string) {
+    console.log(`RabbitMQ data: ${JSON.stringify(data)}`);
     const product = await this.productService.createProduct(data);
     return {
       success: true,
@@ -31,17 +40,5 @@ export class ProductController {
       message: 'Product created successfully',
       data: product,
     };
-  }
-
-  @Post('/:id/like')
-  async like(@Param('id') id: number) {
-    const product = await this.productService.findOne(id);
-    this.httpService
-      .post(`http://localhost:5000/api/v1/products/${id}/like`, {})
-      .subscribe((res) => {
-        console.log('Axios response', res);
-      });
-
-    return this.productService.like(id, product.likes + 1);
   }
 }
