@@ -1,12 +1,37 @@
+import { useLoginMutation } from "@/features/user/user.api";
+import { ILogin } from "@/interfaces/login.interface";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILogin>();
+  const router = useRouter();
+
+  const [login] = useLoginMutation();
+
+  const handleLogin: SubmitHandler<ILogin> = async (data) => {
+    const res: any = await login(data);
+    if (res?.data && res?.data?.user) {
+      Cookies.set("fsAccessToken", res.data.accessToken, { expires: 7 });
+      toast.success("Logged in successful");
+      router.push("/");
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="card shrink-0 w-1/2 shadow-2xl bg-base-100">
-          <form className="card-body">
+          <form onSubmit={handleSubmit(handleLogin)} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -16,6 +41,7 @@ const Login = () => {
                 placeholder="email"
                 className="input input-bordered"
                 required
+                {...register("email", { required: true })}
               />
             </div>
             <div className="form-control">
@@ -27,6 +53,7 @@ const Login = () => {
                 placeholder="password"
                 className="input input-bordered"
                 required
+                {...register("password", { required: true })}
               />
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
@@ -35,7 +62,9 @@ const Login = () => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary text-white">Login</button>
+              <button type="submit" className="btn btn-primary text-white">
+                Login
+              </button>
             </div>
             <div>
               <p>

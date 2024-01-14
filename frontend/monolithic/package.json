@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
+    "js-cookie": "^3.0.5",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
@@ -20,6 +21,7 @@
     "swiper": "^11.0.5"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

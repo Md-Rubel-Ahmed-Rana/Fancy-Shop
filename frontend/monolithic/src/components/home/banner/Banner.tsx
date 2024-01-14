@@ -41,7 +41,7 @@ const Banner = () => {
     },
   ];
 
-  const [swiper, setSwiper] = useState(null);
+  const [swiper, setSwiper] = useState<any>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -56,7 +56,7 @@ const Banner = () => {
     }
   };
 
-  const onSwiperReady = (swiper) => {
+  const onSwiperReady = (swiper: any) => {
     setSwiper(swiper);
     swiper.slideTo(currentIndex, 0); // Set the initial slide
   };
