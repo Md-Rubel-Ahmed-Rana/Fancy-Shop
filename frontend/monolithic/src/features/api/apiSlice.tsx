@@ -5,7 +5,7 @@ const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://bookcatalogserver.vercel.app/",
   }),
-  tagTypes: [] as any,
+  tagTypes: ["user"] as any,
   endpoints: () => ({}),
 });
 

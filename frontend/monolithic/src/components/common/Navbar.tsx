@@ -1,11 +1,53 @@
 /* eslint-disable @next/next/no-img-element */
-import { useLoggedInUserQuery } from "@/features/user/user.api";
+import {
+  useLoggedInUserQuery,
+  useUploadProfileImageMutation,
+} from "@/features/user/user.api";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaUserCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { data: user } = useLoggedInUserQuery({});
+  const imageHostKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+  const { register, handleSubmit, reset } = useForm();
+  const [isUploaded, setIsUploaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [uploadImage] = useUploadProfileImageMutation();
+
+  const handleUploadProfileImage: SubmitHandler<any> = (data: any) => {
+    setLoading(true);
+    const image = data.image[0];
+    const formData = new FormData();
+    formData.append("image", image);
+
+    fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then(async (imgData) => {
+        if (imgData?.data?.url) {
+          const res: any = await uploadImage({
+            profileImage: imgData?.data?.url,
+            id: user?.id,
+          });
+          if (res?.data?.success) {
+            reset();
+            setIsUploaded(true);
+            setLoading(false);
+          }
+        }
+      })
+      .catch((err) => {
+        toast.error(err?.message || "Something went wrong");
+        reset();
+        setIsUploaded(false);
+        setLoading(false);
+      });
+  };
 
   return (
     <div className="navbar bg-blue-500">
@@ -48,6 +90,13 @@ const Navbar = () => {
               )}
               {!user?.profileImage && (
                 <FaUserCircle
+                  onClick={() => {
+                    const element: any =
+                      document.getElementById("profileImageModal");
+                    if (element !== null) {
+                      element.showModal();
+                    }
+                  }}
                   className="w-full h-full"
                   title="Upload profile image"
                 />
@@ -66,6 +115,41 @@ const Navbar = () => {
           </div>
         )}
       </div>
+
+      <dialog
+        id="profileImageModal"
+        className="modal modal-right sm:modal-middle"
+      >
+        <div className="modal-box">
+          <form
+            onChange={handleSubmit(handleUploadProfileImage)}
+            className="flex flex-col justify-center items-center"
+          >
+            <h3 className="text-2xl font-semibold mb-4">
+              Upload Profile image
+            </h3>
+            {isUploaded && !loading && (
+              <h3 className="text-2xl font-semibold mb-4">Image uploaded</h3>
+            )}
+            {!isUploaded && !loading && (
+              <input
+                {...register("image", { required: true })}
+                type="file"
+                accept="image/*"
+                className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+              />
+            )}
+            {loading && (
+              <span className="loading loading-spinner loading-lg"></span>
+            )}
+          </form>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

@@ -9,6 +9,15 @@ const userApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["user"] as any,
+    }),
+    uploadProfileImage: builder.mutation({
+      query: ({ profileImage, id }) => ({
+        url: `http://localhost:5002/api/v1/user/uploadProfile/${id}`,
+        method: "PATCH",
+        body: { profileImage },
+      }),
+      invalidatesTags: ["user"] as any,
     }),
     login: builder.mutation({
       query: (data) => ({
@@ -16,6 +25,7 @@ const userApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["user"] as any,
     }),
     getUniqueData: builder.query({
       query: () => ({
@@ -29,6 +39,7 @@ const userApi = apiSlice.injectEndpoints({
           authorization: Cookies.get("fsAccessToken"),
         },
       }),
+      providesTags: ["user"] as any,
     }),
   }),
 });
@@ -38,4 +49,5 @@ export const {
   useGetUniqueDataQuery,
   useLoginMutation,
   useLoggedInUserQuery,
+  useUploadProfileImageMutation,
 } = userApi;
