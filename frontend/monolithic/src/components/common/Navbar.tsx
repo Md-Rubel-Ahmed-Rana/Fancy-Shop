@@ -9,7 +9,9 @@ const Navbar = () => {
   return (
     <div className="navbar bg-blue-500">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">Fancy Shop</a>
+        <Link className="btn btn-ghost text-xl" href={"/"}>
+          Fancy Shop
+        </Link>
       </div>
       <div className="flex-none">
         {user && user?.email && (
