@@ -19,7 +19,7 @@ export class Product {
   category: string;
 
   @Prop()
-  imageUrl: string;
+  images: string[];
 
   @Prop()
   inventory: number;

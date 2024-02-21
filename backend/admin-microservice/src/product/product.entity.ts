@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Product {
@@ -6,17 +6,47 @@ export class Product {
   id: string;
 
   @Column()
+  seller: string;
+
+  @Column()
+  productId: string;
+
+  @Column()
   title: string;
 
   @Column()
+  description: string;
+
+  @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
   @Column()
-  image: string;
+  category: string;
+
+  @Column('simple-array')
+  images: string[];
 
   @Column({ default: 0 })
-  inStock: number;
+  inventory: number;
 
-  @Column({ default: 0 })
-  ratings: number;
+  @Column()
+  shippingInfo: string;
+
+  @Column()
+  sku: string;
+
+  @Column('simple-array')
+  tags: string[];
+
+  @Column()
+  condition: string;
+
+  @Column()
+  warrantyInfo: string;
+
+  @Column()
+  returnPolicy: string;
+
+  @Column({ default: false })
+  isApproved?: boolean;
 }

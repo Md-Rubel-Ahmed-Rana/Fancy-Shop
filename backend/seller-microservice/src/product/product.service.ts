@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './product.model';
 import { Model } from 'mongoose';
 import { ClientKafka } from '@nestjs/microservices';
+import { ProductEventDto } from './product.event.dto';
 
 @Injectable()
 export class ProductService {
@@ -21,7 +22,7 @@ export class ProductService {
     const newProduct = await this.productModel.create(product);
 
     // emit new data to admin microservice
-    this.sellerClient.emit('new-product', newProduct);
+    this.sellerClient.emit('new-product', new ProductEventDto(newProduct));
     return newProduct;
   }
 
@@ -45,16 +46,16 @@ export class ProductService {
     );
 
     // send message to admin microservice to review product update
-    this.sellerClient.emit('updated-product', product);
+    this.sellerClient.emit('update-product', new ProductEventDto(product));
     return product;
   }
 
   async deleteProduct(productId: string) {
-    const product = await this.productModel.findByIdAndDelete(productId);
+    const product = await this.productModel.findById(productId);
 
     // send message to admin microservice to delete product
-    this.sellerClient.emit('deleted-product', productId);
-
-    return product;
+    this.sellerClient.emit('delete-product', new ProductEventDto(product));
+    const deletedProduct = await this.productModel.findByIdAndDelete(productId);
+    return deletedProduct;
   }
 }

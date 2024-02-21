@@ -1,11 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsUrl,
-  IsArray
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsArray } from 'class-validator';
 
 export class ProductValidator {
   @IsNotEmpty()
@@ -29,8 +23,8 @@ export class ProductValidator {
   category: string;
 
   @IsNotEmpty()
-  @IsUrl()
-  imageUrl: string;
+  @IsArray()
+  images: string[];
 
   @IsNotEmpty()
   @IsNumber()

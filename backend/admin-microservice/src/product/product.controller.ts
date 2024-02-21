@@ -1,22 +1,10 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Param } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Product } from './product.entity';
-import { ClientProxy } from '@nestjs/microservices';
+import { EventPattern } from '@nestjs/microservices';
 
 @Controller('products')
 export class ProductController {
-  constructor(
-    private productService: ProductService,
-    // @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy,
-  ) {}
+  constructor(private productService: ProductService) {}
 
   @Get()
   async allProducts() {
@@ -29,18 +17,9 @@ export class ProductController {
     };
   }
 
-  @Post('/create')
-  async createProduct(@Body() body: Product) {
-    const product = await this.productService.createProduct(body);
-
-    // send this data to product ms to write
-    // this.client.emit('product', 'hello');
-    return {
-      success: true,
-      statusCode: 201,
-      message: 'Product created successfully',
-      data: product,
-    };
+  @EventPattern('new-product')
+  async newProduct(data: any) {
+    this.productService.newProduct(data);
   }
 
   @Get('/:id')
@@ -54,25 +33,13 @@ export class ProductController {
     };
   }
 
-  @Put('/update/:id')
-  async updateProduct(@Param() id: string, @Body() body: Product) {
-    const product = await this.productService.updateProduct(id, body);
-    return {
-      success: true,
-      statusCode: 200,
-      message: 'Product updated successfully',
-      data: product,
-    };
+  @EventPattern('update-product')
+  async updateProduct(data: any) {
+    this.productService.updateProduct(data);
   }
 
-  @Delete('/delete/:id')
-  async deleteProduct(@Param() id: string) {
-    const product = await this.productService.deleteProduct(id);
-    return {
-      success: true,
-      statusCode: 200,
-      message: 'Product deleted successfully',
-      data: product,
-    };
+  @EventPattern('delete-product')
+  async deleteProduct(data: any) {
+    await this.productService.deleteProduct(data);
   }
 }

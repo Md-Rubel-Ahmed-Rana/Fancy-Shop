@@ -10,15 +10,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     TypeOrmModule.forFeature([Product]),
     ClientsModule.register([
       {
-        name: 'ADMIN_SERVICE',
-        transport: Transport.RMQ,
+        name: 'SELLER_SERVICE',
+        transport: Transport.KAFKA,
         options: {
-          urls: [
-            'amqps://eoghmjcc:dawLE9Hqnmwe3hWzZ1D2pGI9fYqQr23l@shark.rmq.cloudamqp.com/eoghmjcc',
-          ],
-          queue: 'admin_queue',
-          queueOptions: {
-            durable: false,
+          client: {
+            clientId: 'seller',
+            brokers: ['localhost:9092'],
+          },
+          consumer: {
+            groupId: 'seller-consumer',
           },
         },
       },
