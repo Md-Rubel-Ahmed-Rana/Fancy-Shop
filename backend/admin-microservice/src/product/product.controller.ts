@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { EventPattern } from '@nestjs/microservices';
 
@@ -14,6 +14,17 @@ export class ProductController {
       statusCode: 200,
       message: 'Products fetched successfully',
       data: products,
+    };
+  }
+
+  @Patch('/approve/:productId')
+  async approveProduct(@Param('productId') productId: string) {
+    const product = await this.productService.approveProduct(productId);
+    return {
+      success: true,
+      statusCode: 200,
+      message: 'Product approved successfully',
+      data: product,
     };
   }
 
