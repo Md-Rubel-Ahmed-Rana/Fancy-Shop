@@ -1,8 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  getHello() {
+    return {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Welcome from admin microservice',
+      data: null,
+    };
   }
 }

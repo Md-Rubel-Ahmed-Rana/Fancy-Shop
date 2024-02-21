@@ -8,11 +8,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'sql12.freesqldatabase.com',
-      port: 3306,
-      username: 'sql12675142',
-      password: 'W51dEHbyBM',
-      database: 'sql12675142',
+      host: 'nest-admin-db-mdrubelahmedrana521-c6df.a.aivencloud.com',
+      port: 24497,
+      username: 'avnadmin',
+      password: 'AVNS_hnxCMtSe3xvOqt2ehT6',
+      database: 'defaultdb',
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -22,11 +22,3 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [AppService],
 })
 export class AppModule {}
-
-/*
-Host: sql12.freesqldatabase.com
-Database name: sql12675142
-Database user: sql12675142
-Database password: W51dEHbyBM
-Port number: 3306
-*/

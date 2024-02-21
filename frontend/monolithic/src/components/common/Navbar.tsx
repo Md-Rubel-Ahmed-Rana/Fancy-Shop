@@ -49,61 +49,87 @@ const Navbar = () => {
       });
   };
 
+  const handleSearch = (searchTerm: string) => {
+    // Logic for handling the search based on the state values (searchTerm, minPrice, maxPrice, selectedCategory)
+    console.log("Search Term:", searchTerm);
+  };
+
   return (
-    <div className="navbar bg-blue-500">
-      <div className="flex-1">
+    <div className=" flex justify-between bg-blue-500 rounded-sm">
+      <div className="flex">
         <Link className="btn btn-ghost text-xl" href={"/"}>
           Fancy Shop
         </Link>
       </div>
-      <div className="flex-none">
-        <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <div className="indicator">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+      <div className="flex items-center space-x-4 w-2/5">
+        <input
+          type="text"
+          placeholder="Search in Fancy Shop"
+          onChange={(e) => handleSearch(e.target.value)}
+          className="px-3 py-2 border rounded-md w-full focus:outline-none"
+        />
+      </div>
+      <div className="flex items-center ">
+        <div>
+          <button className="font-medium mr-4">
+            <Link href={"/products"}>Products</Link>
+          </button>
+        </div>
+        {user?.email && (
+          <>
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              <span className="badge badge-sm indicator-item">8</span>
+                <div className="indicator">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <span className="badge badge-sm indicator-item">8</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              {user?.profileImage && (
-                <img alt="Profile" src={user?.profileImage} />
-              )}
-              {!user?.profileImage && (
-                <FaUserCircle
-                  onClick={() => {
-                    const element: any =
-                      document.getElementById("profileImageModal");
-                    if (element !== null) {
-                      element.showModal();
-                    }
-                  }}
-                  className="w-full h-full"
-                  title="Upload profile image"
-                />
-              )}
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  {user?.profileImage && (
+                    <img alt="Profile" src={user?.profileImage} />
+                  )}
+                  {!user?.profileImage && (
+                    <FaUserCircle
+                      onClick={() => {
+                        const element: any =
+                          document.getElementById("profileImageModal");
+                        if (element !== null) {
+                          element.showModal();
+                        }
+                      }}
+                      className="w-full h-full"
+                      title="Upload profile image"
+                    />
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
         {!user?.email && (
           <div className="flex justify-center items-center gap-4 font-medium">
             <button>

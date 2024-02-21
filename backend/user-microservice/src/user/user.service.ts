@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-import { PrismaClient, User } from '@prisma/client';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import * as bcrypt from "bcrypt";
+import { PrismaClient, User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -29,6 +29,18 @@ export class UserService {
 
   async users() {
     const data = await prisma.user.findMany({});
+    return data;
+  }
+  async getUsernamesAndEmails() {
+    const data = await prisma.user.findMany({});
+    return data.map((user) => ({ username: user.username, email: user.email }));
+  }
+
+  async uploadProfile(id: string, imageUrl: string) {
+    const data = await prisma.user.update({
+      where: { id },
+      data: { profileImage: imageUrl },
+    });
     return data;
   }
 }
