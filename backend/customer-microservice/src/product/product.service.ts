@@ -14,9 +14,8 @@ export class ProductService {
     return products;
   }
 
-  async createProduct(data: any) {
-    const newProduct = await this.productModel.create(data);
-    return newProduct;
+  async newProduct(data: any) {
+    await this.productModel.create(data);
   }
 
   async getProduct(id: string) {

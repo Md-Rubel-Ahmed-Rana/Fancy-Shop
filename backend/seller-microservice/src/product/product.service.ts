@@ -50,6 +50,12 @@ export class ProductService {
     return product;
   }
 
+  async approvedProductEvent(data: any) {
+    await this.productModel.findByIdAndUpdate(data?.productId, {
+      $set: { isApproved: true }
+    });
+  }
+
   async deleteProduct(productId: string) {
     const product = await this.productModel.findById(productId);
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './product.entity';
 import {
@@ -7,12 +7,16 @@ import {
   UpdateResult,
   DeleteResult,
 } from 'typeorm';
+import { ClientKafka } from '@nestjs/microservices';
+import { ProductEventDto } from './product.event.dto';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @Inject('CUSTOMER_SERVICE') private readonly customerClient: ClientKafka,
+    @Inject('SELLER_SERVICE') private readonly sellerClient: ClientKafka,
   ) {}
 
   async products(): Promise<Product[]> {
@@ -34,12 +38,18 @@ export class ProductService {
       { isApproved: true },
     );
 
+    const options: FindOneOptions<Product> = { where: { productId: id } };
+    const newProduct = await this.productRepository.findOne(options);
+
     // send this product to customer microservice
+    this.customerClient.emit('new-product', new ProductEventDto(newProduct));
     // approve this product for seller microservice
+    this.sellerClient.emit('approved-product', new ProductEventDto(newProduct));
   }
 
   async updateProduct(data: Partial<Product>) {
-    await this.productRepository.update({ productId: data.productId }, data);
+    await this.productRepository.update({ productId: data?.productId }, data);
+    // update this product for customer microservice
   }
 
   async deleteProduct(data: Product) {

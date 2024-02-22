@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductValidator } from './product.validate';
+import { EventPattern } from '@nestjs/microservices';
 
 @Controller('product')
 export class ProductController {
@@ -80,5 +81,10 @@ export class ProductController {
       message: 'Product deleted',
       data: null
     };
+  }
+
+  @EventPattern('approved-product')
+  approvedProductEvent(data: any) {
+    this.productService.approvedProductEvent(data);
   }
 }

@@ -22,6 +22,19 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           },
         },
       },
+      {
+        name: 'CUSTOMER_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'customer',
+            brokers: ['localhost:9092'],
+          },
+          consumer: {
+            groupId: 'customer-consumer',
+          },
+        },
+      },
     ]),
   ],
   controllers: [ProductController],

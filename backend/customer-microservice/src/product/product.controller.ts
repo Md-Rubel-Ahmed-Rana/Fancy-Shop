@@ -1,13 +1,10 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { HttpService } from '@nestjs/axios';
+import { EventPattern } from '@nestjs/microservices';
 
 @Controller('/products')
 export class ProductController {
-  constructor(
-    private productService: ProductService,
-    private httpService: HttpService,
-  ) {}
+  constructor(private productService: ProductService) {}
 
   @Get()
   async getProducts() {
@@ -31,14 +28,9 @@ export class ProductController {
     };
   }
 
-  async handleCreateProduct(data: string) {
-    console.log(`RabbitMQ data: ${JSON.stringify(data)}`);
-    const product = await this.productService.createProduct(data);
-    return {
-      success: true,
-      statusCode: 201,
-      message: 'Product created successfully',
-      data: product,
-    };
+  @EventPattern('new-product')
+  async newProduct(data: any) {
+    console.log('New Product from admin', data);
+    this.productService.newProduct(data);
   }
 }
