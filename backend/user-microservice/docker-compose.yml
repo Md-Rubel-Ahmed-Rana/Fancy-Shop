@@ -1,0 +1,19 @@
+version: "3"
+services:
+
+  user-ms:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    container_name: user-ms
+    ports:
+      - "5002:5002"
+    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/prisma
+
+    env_file:
+      - .env
+  

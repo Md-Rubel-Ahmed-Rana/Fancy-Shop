@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 6002;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

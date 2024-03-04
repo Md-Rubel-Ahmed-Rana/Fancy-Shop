@@ -1,0 +1,83 @@
+version: '3'
+
+services: 
+
+  user-microservice:
+    build: 
+      context: user-microservice
+    container_name: user-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    volumes: 
+      - ./user-ms:/app
+      - /app/node_modules
+    tty: true
+    ports: 
+      - "5002:5002"
+    command: npm start
+
+  customer-microservice:
+    build: 
+      context: customer-microservice
+    container_name: customer-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    volumes: 
+      - ./customer-ms:/app
+      - /app/node_modules
+    tty: true
+    ports: 
+      - "5001:5001"
+    command: npm start
+
+  seller-microservice:
+    build: 
+      context: seller-microservice
+    container_name: seller-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    volumes: 
+      - ./seller-ms:/app
+      - /app/node_modules
+    tty: true
+    ports: 
+      - "5005:5005"
+    command: npm start
+
+  admin-microservice:
+    build: 
+      context: admin-microservice
+    container_name: admin-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    volumes: 
+      - ./admin-ms:/app
+      - /app/node_modules
+    tty: true
+    ports: 
+      - "5000:5000"
+    command: npm start
+
+  nginx:
+    build: 
+      context: nginx
+    container_name: nginx
+    restart: always
+    tty: true
+    ports: 
+      - "8080:8080"
+    networks: 
+      - node-network
+    depends_on:
+       - user-microservice
+       - customer-microservice
+       - seller-microservice
+       - admin-microservice
+  
+networks: 
+  node-network:
+    driver: bridge

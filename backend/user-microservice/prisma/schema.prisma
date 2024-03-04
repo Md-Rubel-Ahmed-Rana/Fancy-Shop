@@ -18,5 +18,5 @@ model User {
   email        String  @unique
   profileImage String? @default("")
 
-  @@map("Users")
+  @@map("users")
 }

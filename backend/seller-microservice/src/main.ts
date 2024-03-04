@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 
-const port = process.env.PORT || 5005;
+const port = process.env.PORT || 6003;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

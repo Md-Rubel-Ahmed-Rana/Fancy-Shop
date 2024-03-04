@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { User } from "src/interfaces/user.interface";
 
 const prisma = new PrismaClient();
 

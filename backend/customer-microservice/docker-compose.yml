@@ -1,0 +1,18 @@
+version: "3"
+services:
+
+  customer-ms:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    container_name: customer-ms
+    ports:
+      - "5001:5001"
+    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    env_file:
+      - .env
+  

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["@prisma/client"],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
