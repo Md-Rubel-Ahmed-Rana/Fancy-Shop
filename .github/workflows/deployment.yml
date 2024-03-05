@@ -1,0 +1,43 @@
+name: Microservices Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Build and deploy the specific microservice that has been updated
+      - name: Deploy Microservice
+        working-directory: backend/${{ matrix.microservice }}
+        if: ${{ github.event_path == 'backend/${{ matrix.microservice }}' || contains(github.event.commits.*.added, 'backend/${{ matrix.microservice }}') || contains(github.event.commits.*.modified, 'backend/${{ matrix.microservice }}') }}
+        run: |
+          docker-compose -f docker-compose.prod.yml build ${{ matrix.microservice }}
+          docker-compose -f docker-compose.prod.yml up -d ${{ matrix.microservice }}
+
+      # Build and deploy the frontend
+      - name: Deploy Frontend
+        working-directory: frontend
+        if: ${{ github.event_path == 'frontend' || contains(github.event.commits.*.added, 'frontend') || contains(github.event.commits.*.modified, 'frontend') }}
+        run: |
+          docker-compose -f docker-compose.prod.yml build frontend
+          docker-compose -f docker-compose.prod.yml up -d frontend
+
+    strategy:
+      matrix:
+        microservice:
+          - admin-microservice
+          - cart-microservice
+          - customer-microservice
+          - order-microservice
+          - seller-microservice
+          - user-microservice
