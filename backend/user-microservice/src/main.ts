@@ -5,7 +5,6 @@ const port = process.env.PORT || 6001;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix("api/v1");
   app.enableCors();
   await app.listen(port, () => {
     console.log(`User microservice is running on port: ${port}`);
