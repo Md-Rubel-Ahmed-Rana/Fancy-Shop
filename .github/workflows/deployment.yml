@@ -18,7 +18,7 @@ jobs:
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -28,16 +28,16 @@ jobs:
         working-directory: backend/${{ matrix.microservice }}
         if: ${{ github.event_path == 'backend/${{ matrix.microservice }}' || contains(github.event.commits.*.added, 'backend/${{ matrix.microservice }}') || contains(github.event.commits.*.modified, 'backend/${{ matrix.microservice }}') }}
         run: |
-          docker-compose -f docker-compose.prod.yml build ${{ matrix.microservice }}
-          docker-compose -f docker-compose.prod.yml push ${{ matrix.microservice }}
+          docker build -t rubel49882/${{ matrix.microservice }}:${{ github.sha }} .
+          docker push rubel49882/${{ matrix.microservice }}:${{ github.sha }}
 
       # Build and push the frontend
       - name: Deploy Frontend
         working-directory: frontend
         if: ${{ github.event_path == 'frontend' || contains(github.event.commits.*.added, 'frontend') || contains(github.event.commits.*.modified, 'frontend') }}
         run: |
-          docker-compose -f docker-compose.prod.yml build frontend
-          docker-compose -f docker-compose.prod.yml push frontend
+          docker build -t rubel49882/frontend:${{ github.sha }} .
+          docker push rubel49882/frontend:${{ github.sha }}
 
     strategy:
       matrix:
