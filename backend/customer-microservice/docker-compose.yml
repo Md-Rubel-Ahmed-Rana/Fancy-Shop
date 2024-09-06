@@ -1,13 +1,13 @@
 version: "3"
 services:
 
-  customer-ms:
+  customer:
     build:
       dockerfile: Dockerfile
       context: ./
-    container_name: customer-ms
+    container_name: customer-microservice
     ports:
-      - "5001:5001"
+      - "6004:6004"
     restart: always
     volumes:
       - .:/app

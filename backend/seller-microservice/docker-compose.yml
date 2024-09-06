@@ -1,13 +1,13 @@
 version: "3"
 services:
 
-  seller-ms:
+  seller:
     build:
       dockerfile: Dockerfile
       context: ./
-    container_name: seller-ms
+    container_name: seller-microservice
     ports:
-      - "5005:5005"
+      - "6003:6003"
     restart: always
     volumes:
       - .:/app

@@ -10,6 +10,6 @@ RUN yarn install
 
 COPY . .
 
-EXPOSE 5000
+EXPOSE 6002
 
 CMD ["npm", "start"]

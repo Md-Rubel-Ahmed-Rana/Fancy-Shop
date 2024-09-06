@@ -1,18 +1,17 @@
 version: "3"
 services:
 
-  user:
+  payment:
     build:
       dockerfile: Dockerfile
       context: ./
-    container_name: user-microservice
+    container_name: payment-microservice
     ports:
-      - "6001:6001"
+      - "6007:6007"
     restart: always
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/prisma
 
     env_file:
       - .env

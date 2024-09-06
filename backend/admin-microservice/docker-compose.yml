@@ -1,13 +1,13 @@
 version: "3"
 services:
 
-  admin-ms:
+  admin:
     build:
       dockerfile: Dockerfile
       context: ./
-    container_name: admin-ms
+    container_name: admin-microservice
     ports:
-      - "5000:5000"
+      - "6002:6002"
     restart: always
     volumes:
       - .:/app

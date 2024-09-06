@@ -6,7 +6,6 @@ const port = process.env.PORT || 6004;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api/v1/');
   app.enableCors();
   app.connectMicroservice({
     name: 'CUSTOMER_SERVICE',

@@ -1,18 +1,17 @@
 version: "3"
 services:
 
-  user:
+  cart:
     build:
       dockerfile: Dockerfile
       context: ./
-    container_name: user-microservice
+    container_name: cart-microservice
     ports:
-      - "6001:6001"
+      - "6005:6005"
     restart: always
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/prisma
 
     env_file:
       - .env
